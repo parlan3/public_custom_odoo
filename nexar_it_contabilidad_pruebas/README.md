@@ -1,57 +1,44 @@
-# Nexar-it - Contabilidad de pruebas para Odoo 19
+# CDP
 
 Autor y mantenimiento — Joaquin Romero, Nexar-it.
 
-Versión 19.0.1.1.0. Módulo propio para instalar y validar en staging.
+Versión 19.0.2.0.0 para Odoo 19 Enterprise. Actualización del módulo técnico existente `nexar_it_contabilidad_pruebas`.
 
-## Alcance
+## Funciones
 
-Libro independiente de simulación en las compañías seleccionadas durante la configuración. Un único usuario titular seleccionado por el administrador. El menú contiene movimientos, mayor, balance y cuentas. Se generan cinco diarios por compañía y una copia inicial de su plan de cuentas activo. Los importes se expresan en la moneda de cada compañía.
+Facturas y notas de crédito de clientes y proveedores, cobros y pagos manuales, registro del pago desde la factura y conciliación de la cuenta por cobrar o pagar mediante los modelos y asistentes estándar de Odoo. Cada compañía tiene diarios y siete cuentas independientes CDP. Se crean dentro de las mismas compañías seleccionadas.
 
-Los movimientos se cargan manualmente con líneas de debe y haber. Para una venta se debita la cuenta por cobrar y se acredita el ingreso. Para un cobro se debita caja o banco y se acredita la cuenta por cobrar. Las compras y los pagos se registran del mismo modo con sus cuentas correspondientes. El campo tercero es texto de prueba. Las cuentas se seleccionan del plan copiado.
+El titular ve los documentos fiscales con acceso de consulta. Crea y modifica operaciones CDP. Los demás usuarios normales tienen bloqueados los diarios, cuentas, comprobantes, pagos y apuntes CDP. El superusuario y el administrador de infraestructura pueden eludir las reglas de seguridad.
 
-Esta versión no incluye facturas con productos y cálculo automático de impuestos, vencimientos, conciliación automática, retenciones, multimoneda transaccional, stock ni conexión bancaria. Si se necesita reproducir esos asistentes estándar, hace falta ampliar y probar el módulo antes de considerarlo equivalente al circuito completo de Odoo.
+La protección incluye reglas globales, filtros obligatorios de propiedad incluso en búsquedas internas que omiten ACL, la vista SQL del análisis de facturas y los saldos y búsquedas de contactos. Un usuario convencional no obtiene acceso por seleccionar todos los diarios, enviar IDs CDP conocidos ni forzar el alcance combinado en las opciones de un reporte. El UID de superusuario queda exceptuado expresamente. Se incluyen pruebas de regresión específicas para estos recorridos, pendientes de ejecución en Odoo.sh.
 
-Los datos viven en modelos `nexar.test.*`. No generan asientos en `account.move`, documentos ARCA ni movimientos de stock. Los informes fiscales y estados contables estándar no incorporan este libro. Los reportes propios muestran exclusivamente movimientos confirmados. Las modificaciones requieren volver a borrador y conservan el número. No se permite eliminar movimientos completos. Esta versión conserva fecha de última modificación, sin historial de versiones.
+El menú visible se llama CDP. Incluye mayor, balance y resultados en tres alcances, CDP, fiscal y combinado. Las entradas de reportes estándar abren por defecto el alcance fiscal. Los reportes CDP y combinados se abren desde sus menús respectivos. El selector estándar de diarios restringe adicionalmente cada reporte. Para seleccionar cuentas, guardar un filtro favorito privado por cuentas desde Apuntes y elegirlo en el filtro de apuntes del reporte.
 
-## Seguridad
+Los importes CDP se contabilizan en los modelos normales de Odoo. Se excluyen de los reportes estándar mediante el alcance fiscal y de los usuarios normales mediante reglas globales. Una consulta SQL externa o una integración que utilice superusuario debe aplicar explícitamente su propio filtro CDP. Antes de aceptar un reporte personalizado ajeno al módulo, verificar que usa `_get_report_query` o `_get_options_domain` y respeta las reglas de registros.
 
-ACL específicas y reglas globales exigen titular coincidente y compañía permitida, incluso si a otro usuario se le asigna accidentalmente el grupo del módulo. Los usuarios normales no tienen menú ni acceso por API a estos modelos. El usuario titular conserva Accounting / Read-only. Reglas globales adicionales impiden escrituras en los principales modelos contables fiscales aun si se agrega accidentalmente el grupo de contabilidad.
+## Alcance de esta entrega
 
-No hay portal, enlaces públicos, adjuntos ni chatter propios del circuito. El superusuario y quien administra la base o el código pueden eludir o cambiar la seguridad. No es una barrera frente al administrador de infraestructura.
+Esta versión utiliza moneda de la compañía, líneas sin impuestos y pagos manuales. Genera comprobantes internos de simulación sin autorización fiscal. Los diarios tienen deshabilitados los documentos fiscales latinoamericanos. Se bloquean los enlaces públicos de portal y el envío mediante el asistente de facturas. La facturación fiscal electrónica, retenciones, impuestos simulados, multimoneda, distribuciones analíticas, facturación desde ventas/compras e integración de inventario requieren ampliaciones específicas. Las facturas se crean directamente desde CDP.
 
-## Instalación directa en el repositorio
+Los movimientos manuales de la versión inicial se conservan bajo Histórico manual. No se migran a facturas ni forman parte de los nuevos reportes combinados. Esa decisión evita duplicar o reinterpretar pruebas ya cargadas.
 
-1. Guardar un respaldo de la base staging.
-2. Descomprimir el ZIP y copiar la carpeta `nexar_it_contabilidad_pruebas` completa en la raíz del repositorio de la rama staging de Odoo.sh, o en una carpeta de addons ya detectada por el proyecto.
-3. Hacer commit y push. Esperar a que el build termine correctamente.
-4. Abrir la base staging, activar modo desarrollador y entrar en Aplicaciones. Actualizar la lista de aplicaciones.
-5. Buscar `Nexar-it - Contabilidad de pruebas` e instalarlo.
-6. Abrir Nexar-it / Configurar contabilidad de pruebas. Seleccionar las compañías y un usuario interno dedicado a pruebas. Confirmar el reemplazo de sus grupos y compañías y pulsar Configurar circuitos.
-7. Comprobar con superusuario un circuito y cinco diarios por compañía seleccionada, con cuentas en cada circuito.
-8. Establecer la contraseña del usuario seleccionado en Ajustes / Usuarios y probar en una sesión independiente.
+## Actualizar en staging
 
-También puede alojarse la carpeta en un repositorio propio y agregarse ese repositorio como submódulo. El ZIP se descomprime antes de subirlo al repositorio.
+1. Respaldar la base de pruebas.
+2. Reemplazar la carpeta `nexar_it_contabilidad_pruebas` del repositorio por la del ZIP. Conservar el mismo nombre técnico para actualizar la instalación existente.
+3. Hacer commit y push en la rama staging y esperar el build.
+4. En Aplicaciones, buscar CDP y pulsar Actualizar. El script de migración configura los diarios y cuentas estándar para los circuitos existentes y concede el grupo contable al titular. Las reglas globales mantienen bloqueada su edición fiscal.
+5. Si se instala desde cero, ejecutar CDP / Configurar contabilidad de pruebas con un usuario administrador y seleccionar el usuario titular y sus compañías.
+6. Cerrar y volver a abrir las sesiones para renovar menús y permisos.
 
-La configuración se ejecuta desde el asistente y exige staging o una base neutralizada. Fija las compañías seleccionadas y reemplaza los grupos del usuario por usuario interno, multicompañía, consulta contable y operador de pruebas. La compañía inicial es la seleccionada con menor ID. Repetir la misma configuración es seguro. Una selección diferente requiere revisión para evitar dejar circuitos sin acceso. El paquete contiene únicamente nombres genéricos y la autoría de Joaquin Romero, Nexar-it.
+## Pruebas antes de habilitar el uso
 
-## Verificación obligatoria en Odoo.sh
+El código fue validado estáticamente. No fue instalado ni ejecutado contra el servidor de destino en esta entrega. Las pruebas TransactionCase incluidas deben ejecutarse en una copia de staging con `--test-enable --test-tags /nexar_it_contabilidad_pruebas --stop-after-init`, usando la configuración y base apropiadas del proyecto. Revisar el log completo y exigir cero fallos.
 
-Se incluyen pruebas TransactionCase etiquetadas `post_install`. Ejecutarlas sobre una copia desechable del staging con el runner de Odoo y `--test-enable --test-tags /nexar_it_contabilidad_pruebas --stop-after-init`, instalando o actualizando el módulo según corresponda. Revisar el log completo y exigir cero fallos. La sintaxis exacta del comando debe usar la configuración y la base de la copia de pruebas del proyecto.
+En cada compañía, crear una factura de cliente por 100, confirmarla y registrar el cobro desde Pagar usando CDP Caja. Debe quedar pagada y con residual cero. Repetir con una factura de proveedor por 40 y su pago. El mayor CDP debe mostrar caja por 60, clientes y proveedores saldados, ingreso 100 y gasto 40. Probar también pagos parciales, notas de crédito y pagos independientes seguidos de conciliación manual antes de habilitar esos recorridos.
 
-Además de las pruebas automatizadas, verificar en la interfaz con sesiones independientes:
+Comprobar que el mayor fiscal excluye los apuntes CDP, el mayor CDP excluye los fiscales y el combinado muestra ambos. Probar selectores de diarios, filtros de cuentas, comparación por períodos y exportaciones PDF/XLSX. Comprobar el rechazo de modificación, cancelación y pago de comprobantes fiscales por el titular. Con otro usuario normal, probar búsquedas, enlaces directos, exportaciones y lectura por API de los IDs CDP conocidos. Revisar los reportes y asistentes específicos instalados en la base.
 
-- Usuario titular ve solamente las compañías seleccionadas y puede consultar facturas, asientos y reportes fiscales. Intentar crear, editar, contabilizar, cancelar y conciliar registros fiscales debe fallar.
-- Crear una venta simulada y su cobro mediante dos asientos balanceados en cada compañía. Confirmar, volver a borrador, editar y confirmar. Verificar mayor y balance.
-- Anotar totales y cantidades fiscales antes y después. Deben permanecer iguales, también al abrir reportes como administrador.
-- Usuario normal de cada compañía no ve el menú y no puede leer por enlace directo ni por API IDs conocidos de circuitos, cuentas, diarios, movimientos o apuntes. Comprobar búsquedas, exportaciones y agrupaciones.
-- Intentar usar una cuenta de otra compañía, alterar directamente el estado por API y modificar líneas confirmadas. Debe fallar.
-- Verificar que el usuario no ve compañías ajenas a la selección, y que las reglas no impiden el trabajo contable normal de los demás usuarios.
+## Reversión y conservación de datos
 
-## Estado de validación
-
-El paquete fue revisado estáticamente con análisis de sintaxis Python, XML, CSV y referencias internas. No se ejecutó contra un servidor Odoo 19 ni se instaló en un servidor de destino. Las pruebas de integración y seguridad deben aprobarse en Odoo.sh antes de habilitar su uso. Esta entrega cubre un libro manual de simulación y requiere validación funcional del alcance.
-
-## Reversión
-
-Antes de cargar datos, puede desinstalarse para retirar modelos, menús y reglas. La desinstalación elimina los datos de los modelos de pruebas. Después de cargar datos, exportar y respaldar primero. Los grupos y compañías del usuario se ajustaron mediante el asistente y deben restaurarse manualmente si se revierte. Los datos fiscales no son modificados por el libro de pruebas.
+Restaurar el respaldo si falla la actualización. Después de contabilizar operaciones CDP, conservar instalado el módulo para mantener su clasificación y seguridad. Desinstalarlo eliminaría las reglas que separan los datos, aunque los documentos contables estándar podrían permanecer. No desinstalarlo sobre una base con documentos CDP sin un procedimiento de migración y respaldo.

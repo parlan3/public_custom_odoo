@@ -60,7 +60,7 @@ class Circuit(models.Model):
 
 class Setup(models.TransientModel):
     _name = 'nexar.test.setup'
-    _description = 'Configurar contabilidad de pruebas Nexar-it'
+    _description = 'Configurar CDP'
 
     company_ids = fields.Many2many('res.company', string='Compañías', required=True)
     user_id = fields.Many2one('res.users', string='Usuario titular', required=True,
@@ -92,7 +92,7 @@ class Setup(models.TransientModel):
             raise ValidationError(_('Ya existe una configuración diferente. Revisala antes de cambiar titular o compañías.'))
         circuits._initialize_target(self.company_ids, self.user_id)
         return {'type': 'ir.actions.client', 'tag': 'display_notification', 'params': {
-            'title': 'Nexar-it', 'message': 'Circuitos configurados.', 'type': 'success',
+            'title': 'CDP', 'message': 'Circuitos configurados.', 'type': 'success',
             'next': {'type': 'ir.actions.act_window_close'},
         }}
 
