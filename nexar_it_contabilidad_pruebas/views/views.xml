@@ -154,9 +154,9 @@
         <field name="view_mode">list</field>
     </record>
     <menuitem id="menu_root" name="CDP" groups="group_operator" sequence="50" />
+    <menuitem id="menu_legacy" name="Histórico manual" parent="menu_root" sequence="90" />
     <menuitem id="menu_moves" parent="menu_legacy" name="Movimientos" action="action_moves" sequence="10" />
     <menuitem id="menu_ledger" parent="menu_legacy" name="Mayor" action="action_ledger" sequence="20" />
     <menuitem id="menu_balance" parent="menu_legacy" name="Balance" action="action_balance" sequence="30" />
     <menuitem id="menu_accounts" parent="menu_legacy" name="Cuentas" action="action_accounts" sequence="40" />
-    <menuitem id="menu_legacy" name="Histórico manual" parent="menu_root" sequence="90" />
 </odoo>

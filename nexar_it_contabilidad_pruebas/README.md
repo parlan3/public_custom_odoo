@@ -2,7 +2,7 @@
 
 Autor y mantenimiento — Joaquin Romero, Nexar-it.
 
-Versión 19.0.2.0.0 para Odoo 19 Enterprise. Actualización del módulo técnico existente `nexar_it_contabilidad_pruebas`.
+Versión 19.0.2.0.1 para Odoo 19 Enterprise. Corrige el orden de carga del menú histórico. Actualización del módulo técnico existente `nexar_it_contabilidad_pruebas`.
 
 ## Funciones
 
