@@ -1,0 +1,68 @@
+<odoo>
+  <record id="setup_form" model="ir.ui.view">
+    <field name="name">nexar.test.setup.form</field><field name="model">nexar.test.setup</field>
+    <field name="arch" type="xml"><form string="Nexar-it - Configuración">
+      <div class="alert alert-warning" role="alert">Se reemplazarán los grupos y las compañías del usuario seleccionado. Usá una cuenta dedicada a pruebas.</div>
+      <group><field name="company_ids" widget="many2many_tags" options="{'no_create': True}"/>
+      <field name="user_id" options="{'no_create': True}"/><field name="acknowledge"/></group>
+      <footer><button name="action_configure" type="object" string="Configurar circuitos" class="oe_highlight"/>
+      <button special="cancel" string="Cancelar"/></footer>
+    </form></field>
+  </record>
+  <record id="action_setup" model="ir.actions.act_window"><field name="name">Configurar pruebas Nexar-it</field><field name="res_model">nexar.test.setup</field><field name="view_mode">form</field><field name="target">new</field></record>
+  <menuitem id="menu_setup_root" name="Nexar-it" groups="base.group_system" sequence="90"/>
+  <menuitem id="menu_setup" name="Configurar contabilidad de pruebas" parent="menu_setup_root" action="action_setup" groups="base.group_system"/>
+  <record id="move_list" model="ir.ui.view">
+    <field name="name">nexar.test.move.list</field><field name="model">nexar.test.move</field>
+    <field name="arch" type="xml"><list decoration-muted="state == 'draft'">
+      <field name="date"/><field name="name"/><field name="company_id"/><field name="journal_id"/>
+      <field name="ref"/><field name="debit"/><field name="credit"/><field name="currency_id" column_invisible="True"/><field name="state"/>
+    </list></field>
+  </record>
+  <record id="move_form" model="ir.ui.view">
+    <field name="name">nexar.test.move.form</field><field name="model">nexar.test.move</field>
+    <field name="arch" type="xml"><form string="Movimiento de prueba">
+      <header><button name="action_post" type="object" string="Confirmar prueba" class="oe_highlight" invisible="state != 'draft'"/>
+      <button name="action_draft" type="object" string="Volver a borrador" invisible="state != 'posted'"/>
+      <field name="state" widget="statusbar"/></header>
+      <sheet><div class="alert alert-warning" role="alert">SIMULACIÓN — SIN VALIDEZ FISCAL</div>
+      <h1><field name="name"/></h1>
+      <group><group><field name="journal_id" readonly="state != 'draft'" options="{'no_create': True, 'no_open': True}"/>
+        <field name="company_id"/><field name="circuit_id" invisible="True"/></group>
+        <group><field name="date" readonly="state != 'draft'"/><field name="ref" readonly="state != 'draft'"/><field name="currency_id"/></group></group>
+      <field name="line_ids" readonly="state != 'draft'">
+        <list editable="bottom"><field name="account_id" domain="[('circuit_id', '=', parent.circuit_id)]" options="{'no_create': True, 'no_open': True}"/>
+        <field name="label"/><field name="counterparty"/><field name="debit" sum="Debe"/><field name="credit" sum="Haber"/></list>
+      </field>
+      <group><field name="debit"/><field name="credit"/></group><field name="note" readonly="state != 'draft'"/>
+      </sheet>
+    </form></field>
+  </record>
+  <record id="line_list" model="ir.ui.view">
+    <field name="name">nexar.test.line.list</field><field name="model">nexar.test.line</field>
+    <field name="arch" type="xml"><list create="false" edit="false" delete="false">
+      <field name="date"/><field name="company_id"/><field name="move_id"/><field name="account_id"/><field name="label"/><field name="counterparty"/>
+      <field name="debit" sum="Debe"/><field name="credit" sum="Haber"/><field name="balance" sum="Saldo"/>
+    </list></field>
+  </record>
+  <record id="line_pivot" model="ir.ui.view">
+    <field name="name">nexar.test.line.pivot</field><field name="model">nexar.test.line</field>
+    <field name="arch" type="xml"><pivot string="Balance de pruebas">
+      <field name="company_id" type="row"/><field name="account_id" type="row"/>
+      <field name="debit" type="measure"/><field name="credit" type="measure"/><field name="balance" type="measure"/>
+    </pivot></field>
+  </record>
+  <record id="account_list" model="ir.ui.view">
+    <field name="name">nexar.test.account.list</field><field name="model">nexar.test.account</field>
+    <field name="arch" type="xml"><list create="false" edit="false" delete="false"><field name="code"/><field name="name"/><field name="company_id"/><field name="account_type"/></list></field>
+  </record>
+  <record id="action_moves" model="ir.actions.act_window"><field name="name">Movimientos de prueba</field><field name="res_model">nexar.test.move</field><field name="view_mode">list,form</field></record>
+  <record id="action_ledger" model="ir.actions.act_window"><field name="name">Mayor de pruebas</field><field name="res_model">nexar.test.line</field><field name="view_mode">list,pivot</field><field name="domain">[('state', '=', 'posted')]</field><field name="context">{'group_by': ['company_id', 'account_id']}</field></record>
+  <record id="action_balance" model="ir.actions.act_window"><field name="name">Balance de pruebas</field><field name="res_model">nexar.test.line</field><field name="view_mode">pivot,list</field><field name="domain">[('state', '=', 'posted')]</field></record>
+  <record id="action_accounts" model="ir.actions.act_window"><field name="name">Cuentas de pruebas</field><field name="res_model">nexar.test.account</field><field name="view_mode">list</field></record>
+  <menuitem id="menu_root" name="Nexar-it - Contabilidad de pruebas" groups="group_operator" sequence="50"/>
+  <menuitem id="menu_moves" parent="menu_root" name="Movimientos" action="action_moves" sequence="10"/>
+  <menuitem id="menu_ledger" parent="menu_root" name="Mayor" action="action_ledger" sequence="20"/>
+  <menuitem id="menu_balance" parent="menu_root" name="Balance" action="action_balance" sequence="30"/>
+  <menuitem id="menu_accounts" parent="menu_root" name="Cuentas" action="action_accounts" sequence="40"/>
+</odoo>

@@ -1,0 +1,135 @@
+<odoo>
+<record id="rule_circuit" model="ir.rule">
+    <field name="name">Pruebas - titular y compañías - circuit</field>
+    <field name="model_id" ref="model_nexar_test_circuit"/>
+    <field name="domain_force">[('user_id', '=', user.id), ('company_id', 'in', company_ids)]</field>
+    </record>
+<record id="rule_account" model="ir.rule">
+    <field name="name">Pruebas - titular y compañías - account</field>
+    <field name="model_id" ref="model_nexar_test_account"/>
+    <field name="domain_force">[('user_id', '=', user.id), ('company_id', 'in', company_ids)]</field>
+    </record>
+<record id="rule_journal" model="ir.rule">
+    <field name="name">Pruebas - titular y compañías - journal</field>
+    <field name="model_id" ref="model_nexar_test_journal"/>
+    <field name="domain_force">[('user_id', '=', user.id), ('company_id', 'in', company_ids)]</field>
+    </record>
+<record id="rule_move" model="ir.rule">
+    <field name="name">Pruebas - titular y compañías - move</field>
+    <field name="model_id" ref="model_nexar_test_move"/>
+    <field name="domain_force">[('user_id', '=', user.id), ('company_id', 'in', company_ids)]</field>
+    </record>
+<record id="rule_line" model="ir.rule">
+    <field name="name">Pruebas - titular y compañías - line</field>
+    <field name="model_id" ref="model_nexar_test_line"/>
+    <field name="domain_force">[('user_id', '=', user.id), ('company_id', 'in', company_ids)]</field>
+    </record>
+<record id="fiscal_readonly_account_move" model="ir.rule">
+    <field name="name">Pruebas - consulta fiscal obligatoria - account_move</field>
+    <field name="model_id" ref="account.model_account_move"/>
+    <field name="domain_force">[(0, '=', 1)] if user.has_group('nexar_it_contabilidad_pruebas.group_operator') else [(1, '=', 1)]</field>
+    <field name="perm_read" eval="False"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    </record>
+<record id="fiscal_readonly_account_move_line" model="ir.rule">
+    <field name="name">Pruebas - consulta fiscal obligatoria - account_move_line</field>
+    <field name="model_id" ref="account.model_account_move_line"/>
+    <field name="domain_force">[(0, '=', 1)] if user.has_group('nexar_it_contabilidad_pruebas.group_operator') else [(1, '=', 1)]</field>
+    <field name="perm_read" eval="False"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    </record>
+<record id="fiscal_readonly_account_payment" model="ir.rule">
+    <field name="name">Pruebas - consulta fiscal obligatoria - account_payment</field>
+    <field name="model_id" ref="account.model_account_payment"/>
+    <field name="domain_force">[(0, '=', 1)] if user.has_group('nexar_it_contabilidad_pruebas.group_operator') else [(1, '=', 1)]</field>
+    <field name="perm_read" eval="False"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    </record>
+<record id="fiscal_readonly_account_journal" model="ir.rule">
+    <field name="name">Pruebas - consulta fiscal obligatoria - account_journal</field>
+    <field name="model_id" ref="account.model_account_journal"/>
+    <field name="domain_force">[(0, '=', 1)] if user.has_group('nexar_it_contabilidad_pruebas.group_operator') else [(1, '=', 1)]</field>
+    <field name="perm_read" eval="False"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    </record>
+<record id="fiscal_readonly_account_bank_statement" model="ir.rule">
+    <field name="name">Pruebas - consulta fiscal obligatoria - account_bank_statement</field>
+    <field name="model_id" ref="account.model_account_bank_statement"/>
+    <field name="domain_force">[(0, '=', 1)] if user.has_group('nexar_it_contabilidad_pruebas.group_operator') else [(1, '=', 1)]</field>
+    <field name="perm_read" eval="False"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    </record>
+<record id="fiscal_readonly_account_bank_statement_line" model="ir.rule">
+    <field name="name">Pruebas - consulta fiscal obligatoria - account_bank_statement_line</field>
+    <field name="model_id" ref="account.model_account_bank_statement_line"/>
+    <field name="domain_force">[(0, '=', 1)] if user.has_group('nexar_it_contabilidad_pruebas.group_operator') else [(1, '=', 1)]</field>
+    <field name="perm_read" eval="False"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    </record>
+<record id="fiscal_readonly_account_partial_reconcile" model="ir.rule">
+    <field name="name">Pruebas - consulta fiscal obligatoria - account_partial_reconcile</field>
+    <field name="model_id" ref="account.model_account_partial_reconcile"/>
+    <field name="domain_force">[(0, '=', 1)] if user.has_group('nexar_it_contabilidad_pruebas.group_operator') else [(1, '=', 1)]</field>
+    <field name="perm_read" eval="False"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    </record>
+<record id="fiscal_readonly_account_full_reconcile" model="ir.rule">
+    <field name="name">Pruebas - consulta fiscal obligatoria - account_full_reconcile</field>
+    <field name="model_id" ref="account.model_account_full_reconcile"/>
+    <field name="domain_force">[(0, '=', 1)] if user.has_group('nexar_it_contabilidad_pruebas.group_operator') else [(1, '=', 1)]</field>
+    <field name="perm_read" eval="False"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    </record>
+<record id="fiscal_readonly_account_account" model="ir.rule">
+    <field name="name">Pruebas - consulta fiscal obligatoria - account_account</field>
+    <field name="model_id" ref="account.model_account_account"/>
+    <field name="domain_force">[(0, '=', 1)] if user.has_group('nexar_it_contabilidad_pruebas.group_operator') else [(1, '=', 1)]</field>
+    <field name="perm_read" eval="False"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    </record>
+<record id="fiscal_readonly_account_tax" model="ir.rule">
+    <field name="name">Pruebas - consulta fiscal obligatoria - account_tax</field>
+    <field name="model_id" ref="account.model_account_tax"/>
+    <field name="domain_force">[(0, '=', 1)] if user.has_group('nexar_it_contabilidad_pruebas.group_operator') else [(1, '=', 1)]</field>
+    <field name="perm_read" eval="False"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    </record>
+<record id="fiscal_readonly_account_fiscal_position" model="ir.rule">
+    <field name="name">Pruebas - consulta fiscal obligatoria - account_fiscal_position</field>
+    <field name="model_id" ref="account.model_account_fiscal_position"/>
+    <field name="domain_force">[(0, '=', 1)] if user.has_group('nexar_it_contabilidad_pruebas.group_operator') else [(1, '=', 1)]</field>
+    <field name="perm_read" eval="False"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    </record>
+<record id="fiscal_readonly_account_payment_term" model="ir.rule">
+    <field name="name">Pruebas - consulta fiscal obligatoria - account_payment_term</field>
+    <field name="model_id" ref="account.model_account_payment_term"/>
+    <field name="domain_force">[(0, '=', 1)] if user.has_group('nexar_it_contabilidad_pruebas.group_operator') else [(1, '=', 1)]</field>
+    <field name="perm_read" eval="False"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>

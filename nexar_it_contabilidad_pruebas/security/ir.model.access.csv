@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_setup,Configuración,model_nexar_test_setup,base.group_system,1,1,1,1
+access_circuit,Circuitos de prueba,model_nexar_test_circuit,group_operator,1,0,0,0
+access_account,Cuentas de prueba,model_nexar_test_account,group_operator,1,0,0,0
+access_journal,Diarios de prueba,model_nexar_test_journal,group_operator,1,0,0,0
+access_move,Movimientos de prueba,model_nexar_test_move,group_operator,1,1,1,0
+access_line,Apuntes de prueba,model_nexar_test_line,group_operator,1,1,1,1
