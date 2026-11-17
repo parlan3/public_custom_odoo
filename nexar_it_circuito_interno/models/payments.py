@@ -76,6 +76,10 @@ class MethodLine(models.Model):
     @api.constrains('journal_id', 'payment_account_id', 'payment_method_id')
     def _check_internal_method(self):
         for line in self:
+            # The native journal recompute temporarily detaches method lines.
+            # There is no journal circuit to compare during that intermediate state.
+            if not line.journal_id:
+                continue
             circuit = line.journal_id.ni_circuit_id
             # Odoo populates payment methods with the company defaults during journal
             # creation. The setup replaces them before granting the operator group.

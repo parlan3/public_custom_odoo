@@ -1,12 +1,12 @@
 # Nexar Circuito Interno para Odoo 19
 
-Versión 19.0.1.0.0 · Nexar IT · LGPL-3
+Versión 19.0.1.0.1 · Nexar IT · LGPL-3
 
 ## Estado de entrega
 
 Paquete preparado para instalar y validar en staging. Se verificaron sintaxis Python, XML, archivos declarados y referencias XML externas existentes en la base del cliente. Se revisaron los métodos de cuentas, pagos y diferencias de cambio contra el código oficial de Odoo 19.
 
-Las pruebas de integración incluidas todavía deben ejecutarse en un servidor Odoo 19 Enterprise. Esta entrega no certifica su ejecución ni habilita por sí sola el circuito para el cliente. El módulo no se ha instalado desde esta conversación.
+Las pruebas de integración incluidas todavía deben ejecutarse en un servidor Odoo 19 Enterprise. Esta entrega no certifica su ejecución ni habilita por sí sola el circuito para el cliente. La versión 19.0.1.0.0 se instaló en staging. Su configuración falló y se revirtió. Esta revisión 19.0.1.0.1 corrige la validación de métodos de pago durante su desvinculación temporal por Odoo. La revisión debe desplegarse y probarse nuevamente.
 
 ## Alcance
 
@@ -124,3 +124,10 @@ La desinstalación elimina los campos y las reglas del módulo y puede exponer r
 Código oficial Odoo 19 revisado en https://github.com/odoo/odoo/tree/19.0/addons/account, especialmente account_move_line, account_payment y account_full_reconcile. Localización de Argentina en https://github.com/odoo/odoo/tree/19.0/addons/l10n_ar.
 
 Fecha de preparación 17 de noviembre de 2026.
+
+
+## Actualización desde 19.0.1.0.0
+
+Reemplazar la carpeta del addon por esta revisión, publicar el cambio en la rama 19.0 del repositorio custom y actualizar su referencia en stage-1. Confirmar el build. En Aplicaciones, actualizar Nexar Circuito Interno si Odoo.sh no ejecutó la actualización automática. Verificar la versión 19.0.1.0.1 y repetir Configurar circuito con las cuatro empresas y el titular.
+
+El fallo detectado en staging ocurrió antes de confirmar la transacción de configuración. Las reglas manuales y el permiso de consulta del titular deben seguir vigentes hasta que el asistente finalice.

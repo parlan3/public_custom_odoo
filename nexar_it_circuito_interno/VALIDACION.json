@@ -1,11 +1,9 @@
 {
-  "fecha": "2026-11-17",
-  "version": "19.0.1.0.0",
-  "python_sintaxis": "correcta",
-  "xml_sintaxis": "correcta",
-  "referencias_xml_externas_verificadas_en_staging": 16,
-  "casos_de_prueba_odoo_incluidos": 9,
-  "ejecucion_pruebas_odoo": "pendiente de instalación en Odoo 19 Enterprise",
-  "instalacion_en_servidor": "pendiente",
-  "validacion_para_cliente": "pendiente"
+  "version": "19.0.1.0.1",
+  "python_y_xml": "correctos",
+  "version_anterior_instalada": "19.0.1.0.0",
+  "configuracion_anterior": "revertida por ValidationError en método de pago desvinculado",
+  "correccion": "omitir comparación de circuitos mientras journal_id está vacío",
+  "pruebas_integracion": "pendientes de despliegue de 19.0.1.0.1",
+  "casos_regresion_agregados": 2
 }

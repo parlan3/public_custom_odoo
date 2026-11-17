@@ -215,3 +215,23 @@ class TestInternalCircuit(TransactionCase):
         self.assertFalse(invoice.with_user(self.owner).search([('id', '=', invoice.id)]))
         with self.assertRaises((AccessError, ValidationError)), self.cr.savepoint():
             invoice.invoice_line_ids.write({'account_id': self.circuits[0]._account('income').id})
+
+
+    def test_payment_method_temporary_detach(self):
+        circuit = self.circuits[0]
+        journal = circuit._journal('INARS')
+        method = journal.inbound_payment_method_line_ids[:1]
+        self.assertTrue(method)
+        self.assertEqual(method.payment_account_id.ni_circuit_id, circuit)
+        # Mirror account.journal's One2many recompute, which clears the inverse
+        # before removing or reassigning a payment method.
+        method.write({'journal_id': False})
+        self.assertFalse(method.journal_id)
+        method.write({'journal_id': journal.id})
+        self.assertEqual(method.journal_id, journal)
+
+    def test_payment_method_wrong_circuit_still_rejected(self):
+        circuit, other = self.circuits[:2]
+        method = circuit._journal('INARS').inbound_payment_method_line_ids[:1].with_user(self.owner)
+        with self.assertRaises((AccessError, ValidationError)), self.cr.savepoint():
+            method.write({'payment_account_id': other._account('cash_ars').id})
