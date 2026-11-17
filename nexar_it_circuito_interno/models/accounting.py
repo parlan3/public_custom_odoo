@@ -182,6 +182,13 @@ class Line(models.Model):
         internal.tax_ids = False
         super(Line, self - internal)._compute_tax_ids()
 
+    @api.depends('account_id', 'partner_id', 'product_id', 'move_id.journal_id')
+    def _compute_analytic_distribution(self):
+        internal = self.filtered(lambda line: line.move_id.journal_id.ni_circuit_id)
+        # Company-wide distribution models must not populate the private circuit.
+        internal.analytic_distribution = False
+        super(Line, self - internal)._compute_analytic_distribution()
+
     @api.constrains('account_id', 'move_id', 'tax_ids', 'tax_line_id', 'tax_tag_ids', 'analytic_distribution')
     def _check_internal_lines(self):
         for line in self:

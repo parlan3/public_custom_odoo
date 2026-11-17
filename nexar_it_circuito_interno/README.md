@@ -1,12 +1,14 @@
 # Nexar Circuito Interno para Odoo 19
 
-Versión 19.0.1.0.3 · Nexar IT · LGPL-3
+Versión 19.0.1.0.4 · Nexar IT · LGPL-3
 
 ## Estado de entrega
 
 Paquete preparado para instalar y validar en staging. Se verificaron sintaxis Python, XML, archivos declarados y referencias XML externas existentes en la base del cliente. Se revisaron los métodos de cuentas, pagos y diferencias de cambio contra el código oficial de Odoo 19.
 
-Las pruebas de integración incluidas todavía deben ejecutarse en un servidor Odoo 19 Enterprise. La versión 19.0.1.0.1 quedó instalada y configurada en el entorno de pruebas; la confirmación de una venta detectó un bloqueo del control analítico adicional. Esta versión 19.0.1.0.3 incluye la corrección de compatibilidad, la activación explícita del menú por usuario y la revisión de textos. Estas últimas correcciones requieren despliegue y actualización antes de verificarlas en Odoo. Esta entrega no certifica que el circuito esté listo para uso del cliente.
+La versión 19.0.1.0.3 se actualizó en el entorno de pruebas el 17/11/2026. Pasaron 12 operaciones: ventas y compras en ARS y USD, confirmadas y pagadas, en U J S.A., Universo Producciones S.A. y Entre Actos Gourmet S.A. En Elysium Arena S.A. se detectó un bloqueo por un modelo de distribución analítica aplicable a toda la compañía. Esta revisión 19.0.1.0.4 corrige la asignación automática exclusivamente para apuntes internos. Requiere despliegue y pruebas en Odoo antes de entregar el circuito al cliente.
+
+En 19.0.1.0.3 también se comprobaron: textos del asistente sin corrupción, menú oculto para administrador, activación y desactivación explícita, acceso del titular y rechazo de lectura y exportación al administrador. El mayor filtrado a los comprobantes internos devolvió importes para el titular y cero para el administrador. El usuario titular quedó en español de Argentina, con el menú habilitado; el administrador quedó con el menú deshabilitado. Los documentos funcionales de prueba permanecen identificados con la referencia QA 19.0.1.0.3 - PRUEBA INTERNA.
 
 ## Alcance
 
@@ -157,3 +159,10 @@ La ficha técnica del addon sigue administrándose desde Aplicaciones por los ad
 Se normalizó la codificación de los textos propios del módulo y se revisaron etiquetas, mensajes de validación, avisos, títulos, botones y documentación. Los literales Python usan escapes Unicode para preservar los acentos incluso si una herramienta vuelve a guardar el archivo con otra codificación. XML y documentación se guardan en UTF-8. Los textos heredados de Odoo y otros módulos dependen de sus traducciones instaladas.
 
 Actualizar a esta revisión y habilitar expresamente el menú en los usuarios necesarios. La revisión incluye también la compatibilidad analítica de 19.0.1.0.2. Las pruebas operativas continúan pendientes del despliegue.
+
+
+## Revisión 19.0.1.0.4
+
+Evita que los modelos de distribución analítica de la compañía asignen analítica automáticamente a los apuntes del circuito interno. Mantiene el cálculo nativo en los apuntes ordinarios y conserva la validación que rechaza distribuciones introducidas explícitamente en el circuito interno. No modifica la regla analítica compartida de Elysium.
+
+Se añadió una prueba de regresión de ventas, compras y pagos en ARS y USD con una regla analítica general. La prueba requiere ejecutarse en Odoo; la validación local comprueba sintaxis y codificación, no sustituye la ejecución en el servidor.

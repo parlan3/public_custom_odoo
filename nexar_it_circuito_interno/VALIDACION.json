@@ -1,12 +1,15 @@
 {
-  "version": "19.0.1.0.3",
-  "verificacion_local": {
-    "python": 11,
-    "xml": 4,
-    "textos": 18
-  },
-  "codificacion": "UTF-8; literales Python Unicode; sin patrones de caracteres corruptos",
-  "idioma_textos_propios": "español",
-  "pruebas_integracion_odoo": "pendientes del despliegue de esta versión",
-  "estado_entorno": "última versión comprobada 19.0.1.0.1"
+  "version": "19.0.1.0.4",
+  "sintaxis_python_xml": "correcta",
+  "textos": "UTF-8, sin patrones de corrupción",
+  "version_instalada_comprobada": "19.0.1.0.3",
+  "operaciones_completas_en_servidor": 12,
+  "empresas_operativas_probadas": [
+    1,
+    2,
+    3
+  ],
+  "bloqueo_detectado": "Elysium: distribución analítica automática general",
+  "correccion_19_0_1_0_4": "preparada; pendiente despliegue y prueba en Odoo",
+  "pruebas_servidor": "menú, activación por administrador, textos del asistente, privacidad lectura/exportación, informes, 12 ventas/compras con pago"
 }

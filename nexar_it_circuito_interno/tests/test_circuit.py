@@ -269,3 +269,21 @@ class TestInternalCircuit(TransactionCase):
     def test_operator_cannot_enable_own_menu(self):
         with self.assertRaises(AccessError), self.cr.savepoint():
             self.owner.with_user(self.owner).write({'ni_menu_enabled': True})
+
+    def test_company_wide_analytic_default_does_not_enter_internal_circuit(self):
+        circuit = self.circuits[0]
+        company = circuit.company_id
+        plan = self.env['account.analytic.plan'].create({'name': 'NI QA plan general'})
+        analytic = self.env['account.analytic.account'].create({
+            'name': 'NI QA centro general', 'plan_id': plan.id, 'company_id': company.id})
+        self.env['account.analytic.distribution.model'].create({
+            'company_id': company.id, 'analytic_distribution': {str(analytic.id): 100}})
+        for kind in ('out_invoice', 'in_invoice'):
+            for currency in (self.ars, self.usd):
+                invoice = self.invoice(circuit, kind, currency)
+                invoice.action_post()
+                self.assertTrue(all(not line.analytic_distribution for line in invoice.line_ids))
+                self.pay(invoice, circuit, currency)
+        internal_lines = self.env['account.move.line'].with_user(self.owner).search([
+            ('ni_circuit_id', '=', circuit.id)])
+        self.assertTrue(all(not line.analytic_distribution for line in internal_lines))
