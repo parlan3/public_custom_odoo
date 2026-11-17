@@ -6,8 +6,8 @@ from .circuit import GROUP
 
 class Payment(models.Model):
     _inherit = 'account.payment'
-    ni_circuit_id = fields.Many2one(related='journal_id.ni_circuit_id', store=True, index=True)
-    ni_user_id = fields.Many2one(related='journal_id.ni_user_id', store=True, index=True)
+    ni_circuit_id = fields.Many2one(related='journal_id.ni_circuit_id', string='Circuito interno', store=True, index=True)
+    ni_user_id = fields.Many2one(related='journal_id.ni_user_id', string='Usuario titular', store=True, index=True)
 
     @api.depends('journal_id', 'partner_id', 'partner_type')
     def _compute_destination_account_id(self):
@@ -60,9 +60,9 @@ class Payment(models.Model):
                     raise ValidationError(_('Las cuentas del pago deben pertenecer a su circuito.'))
             if circuit:
                 if payment.currency_id != payment.journal_id.currency_id:
-                    raise ValidationError(_('ElegÃ­ la caja correspondiente a la moneda del pago.'))
+                    raise ValidationError(_('Eleg\u00ed la caja correspondiente a la moneda del pago.'))
                 if payment.payment_method_line_id and payment.payment_method_line_id.code != 'manual':
-                    raise ValidationError(_('UsÃ¡ un mÃ©todo manual en el circuito interno.'))
+                    raise ValidationError(_('Us\u00e1 un m\u00e9todo manual en el circuito interno.'))
 
     def action_post(self):
         self.check_access('write')
@@ -86,7 +86,7 @@ class MethodLine(models.Model):
             if circuit and line.env.su:
                 continue
             if line.payment_account_id and line.payment_account_id.ni_circuit_id != circuit:
-                raise ValidationError(_('La cuenta del mÃ©todo de pago debe pertenecer al circuito.'))
+                raise ValidationError(_('La cuenta del m\u00e9todo de pago debe pertenecer al circuito.'))
             if circuit and line.code != 'manual':
                 raise ValidationError(_('El circuito requiere pagos manuales.'))
 
@@ -106,7 +106,7 @@ class Register(models.TransientModel):
         self.line_ids.check_access('write')
         circuit = check_same_circuit(self.line_ids)
         if self.journal_id.ni_circuit_id != circuit:
-            raise ValidationError(_('ElegÃ­ una caja del mismo circuito.'))
+            raise ValidationError(_('Eleg\u00ed una caja del mismo circuito.'))
         return super().action_create_payments()
 
 
@@ -131,8 +131,8 @@ class Partial(models.Model):
 
 class Full(models.Model):
     _inherit = 'account.full.reconcile'
-    ni_circuit_id = fields.Many2one('nexar.internal.circuit', readonly=True, copy=False, index=True, ondelete='restrict')
-    ni_user_id = fields.Many2one(related='ni_circuit_id.user_id', store=True, index=True)
+    ni_circuit_id = fields.Many2one('nexar.internal.circuit', string='Circuito interno', readonly=True, copy=False, index=True, ondelete='restrict')
+    ni_user_id = fields.Many2one(related='ni_circuit_id.user_id', string='Usuario titular', store=True, index=True)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -146,7 +146,7 @@ class Full(models.Model):
                 elif command[0] == Command.SET:
                     ids = list(command[2])
                 else:
-                    raise ValidationError(_('ConciliÃ¡ apuntes existentes.'))
+                    raise ValidationError(_('Concili\u00e1 apuntes existentes.'))
             lines = self.env['account.move.line'].browse(ids)
             lines.check_access('write')
             circuit = check_same_circuit(lines)

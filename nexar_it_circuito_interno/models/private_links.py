@@ -8,7 +8,7 @@ class PrivateLink(models.AbstractModel):
     _name = 'nexar.internal.private.link'
     _description = 'Titular de documentos internos vinculados'
 
-    ni_user_id = fields.Many2one('res.users', readonly=True, copy=False, index=True)
+    ni_user_id = fields.Many2one('res.users', string='Usuario titular', readonly=True, copy=False, index=True)
 
     def _ni_link_owner(self, model, res_id):
         if model not in PROTECTED_MODELS or not res_id:
@@ -21,7 +21,7 @@ class PrivateLink(models.AbstractModel):
         prepared = []
         for vals in vals_list:
             if 'ni_user_id' in vals and not self.env.su:
-                raise AccessError(_('El titular del vÃ­nculo se determina automÃ¡ticamente.'))
+                raise AccessError(_('El titular del v\u00ednculo se determina autom\u00e1ticamente.'))
             model_field = 'model' if self._name == 'mail.message' else 'res_model'
             model = vals.get(model_field) or self.env.context.get('default_' + model_field)
             if self._name == 'mail.activity' and vals.get('res_model_id'):
@@ -32,7 +32,7 @@ class PrivateLink(models.AbstractModel):
 
     def write(self, vals):
         if 'ni_user_id' in vals and not self.env.su:
-            raise AccessError(_('El titular del vÃ­nculo se determina automÃ¡ticamente.'))
+            raise AccessError(_('El titular del v\u00ednculo se determina autom\u00e1ticamente.'))
         model_field = 'model' if self._name == 'mail.message' else 'res_model'
         if self._name == 'mail.activity' and 'res_model_id' in vals:
             target_model = self.env['ir.model'].sudo().browse(vals['res_model_id']).model
@@ -43,7 +43,7 @@ class PrivateLink(models.AbstractModel):
                 owner = self._ni_link_owner(vals.get(model_field, record[model_field]),
                                             vals.get('res_id', record.res_id))
                 if owner != record.ni_user_id.id:
-                    raise AccessError(_('No se pueden trasladar vÃ­nculos entre circuitos.'))
+                    raise AccessError(_('No se pueden trasladar v\u00ednculos entre circuitos.'))
         return super().write(vals)
 
 

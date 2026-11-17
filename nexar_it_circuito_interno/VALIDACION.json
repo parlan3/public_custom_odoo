@@ -1,9 +1,12 @@
 {
-  "version": "19.0.1.0.1",
-  "python_y_xml": "correctos",
-  "version_anterior_instalada": "19.0.1.0.0",
-  "configuracion_anterior": "revertida por ValidationError en método de pago desvinculado",
-  "correccion": "omitir comparación de circuitos mientras journal_id está vacío",
-  "pruebas_integracion": "pendientes de despliegue de 19.0.1.0.1",
-  "casos_regresion_agregados": 2
+  "version": "19.0.1.0.3",
+  "verificacion_local": {
+    "python": 11,
+    "xml": 4,
+    "textos": 18
+  },
+  "codificacion": "UTF-8; literales Python Unicode; sin patrones de caracteres corruptos",
+  "idioma_textos_propios": "español",
+  "pruebas_integracion_odoo": "pendientes del despliegue de esta versión",
+  "estado_entorno": "última versión comprobada 19.0.1.0.1"
 }

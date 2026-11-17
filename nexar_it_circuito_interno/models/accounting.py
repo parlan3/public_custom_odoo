@@ -17,9 +17,9 @@ def check_same_circuit(records):
 
 class Account(models.Model):
     _inherit = 'account.account'
-    ni_circuit_id = fields.Many2one('nexar.internal.circuit', readonly=True, copy=False, index=True, ondelete='restrict')
-    ni_user_id = fields.Many2one(related='ni_circuit_id.user_id', store=True, index=True)
-    ni_role = fields.Char(readonly=True, copy=False)
+    ni_circuit_id = fields.Many2one('nexar.internal.circuit', string='Circuito interno', readonly=True, copy=False, index=True, ondelete='restrict')
+    ni_user_id = fields.Many2one(related='ni_circuit_id.user_id', string='Usuario titular', store=True, index=True)
+    ni_role = fields.Char(string='Funci\u00f3n de la cuenta', readonly=True, copy=False)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -32,19 +32,19 @@ class Account(models.Model):
     def write(self, vals):
         protect_metadata(self.env, vals)
         if not self.env.su and self.ni_circuit_id:
-            raise AccessError(_('La configuraciÃ³n de cuentas internas requiere el administrador.'))
+            raise AccessError(_('La configuraci\u00f3n de cuentas internas requiere el administrador.'))
         return super().write(vals)
 
     def unlink(self):
         if self.ni_circuit_id:
-            raise AccessError(_('ConservÃ¡ las cuentas del circuito.'))
+            raise AccessError(_('Conserv\u00e1 las cuentas del circuito.'))
         return super().unlink()
 
 
 class Journal(models.Model):
     _inherit = 'account.journal'
-    ni_circuit_id = fields.Many2one('nexar.internal.circuit', readonly=True, copy=False, index=True, ondelete='restrict')
-    ni_user_id = fields.Many2one(related='ni_circuit_id.user_id', store=True, index=True)
+    ni_circuit_id = fields.Many2one('nexar.internal.circuit', string='Circuito interno', readonly=True, copy=False, index=True, ondelete='restrict')
+    ni_user_id = fields.Many2one(related='ni_circuit_id.user_id', string='Usuario titular', store=True, index=True)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -60,7 +60,7 @@ class Journal(models.Model):
                  'suspense_account_id', 'profit_account_id', 'loss_account_id',
                  'l10n_latam_use_documents', 'l10n_ar_afip_pos_number', 'l10n_ar_afip_pos_system'}
         if not self.env.su and self.ni_circuit_id and fixed & vals.keys():
-            raise AccessError(_('La configuraciÃ³n del diario interno requiere el administrador.'))
+            raise AccessError(_('La configuraci\u00f3n del diario interno requiere el administrador.'))
         return super().write(vals)
 
     @api.constrains('ni_circuit_id', 'company_id', 'l10n_latam_use_documents',
@@ -70,7 +70,7 @@ class Journal(models.Model):
         for journal in self.filtered('ni_circuit_id'):
             if (journal.company_id != journal.ni_circuit_id.company_id
                     or journal.l10n_latam_use_documents or journal.l10n_ar_afip_pos_number):
-                raise ValidationError(_('El diario interno debe usar su compaÃ±Ã­a y carecer de punto de venta ARCA.'))
+                raise ValidationError(_('El diario interno debe usar su compa\u00f1\u00eda y carecer de punto de venta ARCA.'))
             accounts = (journal.default_account_id | journal.suspense_account_id
                         | journal.profit_account_id | journal.loss_account_id)
             if any(a.ni_circuit_id != journal.ni_circuit_id for a in accounts):
@@ -79,8 +79,8 @@ class Journal(models.Model):
 
 class Move(models.Model):
     _inherit = 'account.move'
-    ni_circuit_id = fields.Many2one(related='journal_id.ni_circuit_id', store=True, index=True)
-    ni_user_id = fields.Many2one(related='journal_id.ni_user_id', store=True, index=True)
+    ni_circuit_id = fields.Many2one(related='journal_id.ni_circuit_id', string='Circuito interno', store=True, index=True)
+    ni_user_id = fields.Many2one(related='journal_id.ni_user_id', string='Usuario titular', store=True, index=True)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -111,11 +111,19 @@ class Move(models.Model):
     def _check_internal_move(self):
         for move in self.filtered('ni_circuit_id'):
             if move.company_id != move.ni_circuit_id.company_id:
-                raise ValidationError(_('CompaÃ±Ã­a incompatible con el circuito.'))
+                raise ValidationError(_('Compa\u00f1\u00eda incompatible con el circuito.'))
             if move.currency_id.name not in ('ARS', 'USD'):
                 raise ValidationError(_('El circuito admite ARS y USD.'))
             if move.fiscal_position_id or move.invoice_cash_rounding_id:
-                raise ValidationError(_('El circuito interno utiliza posiciÃ³n fiscal y redondeo vacÃ­os.'))
+                raise ValidationError(_('El circuito interno utiliza posici\u00f3n fiscal y redondeo vac\u00edos.'))
+
+    def _ea_check_analytic_distribution(self):
+        # This site's analytic control applies to its ordinary accounting.
+        # Internal lines explicitly prohibit analytic allocation.
+        ordinary = self.filtered(lambda move: not move.ni_circuit_id)
+        if ordinary:
+            return super(Move, ordinary)._ea_check_analytic_distribution()
+        return True
 
     def _post(self, soft=True):
         self.check_access('write')
@@ -148,8 +156,8 @@ class Move(models.Model):
 
 class Line(models.Model):
     _inherit = 'account.move.line'
-    ni_circuit_id = fields.Many2one(related='move_id.ni_circuit_id', store=True, index=True)
-    ni_user_id = fields.Many2one(related='move_id.ni_user_id', store=True, index=True)
+    ni_circuit_id = fields.Many2one(related='move_id.ni_circuit_id', string='Circuito interno', store=True, index=True)
+    ni_user_id = fields.Many2one(related='move_id.ni_user_id', string='Usuario titular', store=True, index=True)
 
     @api.depends('product_id', 'partner_id', 'move_id.move_type', 'move_id.journal_id', 'display_type')
     def _compute_account_id(self):
@@ -181,7 +189,7 @@ class Line(models.Model):
             if line.account_id and line.account_id.ni_circuit_id != circuit:
                 raise ValidationError(_('La cuenta y el diario deben pertenecer al mismo circuito.'))
             if circuit and (line.tax_ids or line.tax_line_id or line.tax_tag_ids or line.analytic_distribution):
-                raise ValidationError(_('El circuito utiliza lÃ­neas sin impuestos, etiquetas fiscales ni analÃ­tica.'))
+                raise ValidationError(_('El circuito utiliza l\u00edneas sin impuestos, etiquetas fiscales ni anal\u00edtica.'))
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -197,6 +205,10 @@ class Line(models.Model):
             if any(line.ni_circuit_id != target.ni_circuit_id for line in self):
                 raise ValidationError(_('No se pueden trasladar apuntes entre circuitos.'))
         return super().write(vals)
+
+    def _validate_analytic_distribution(self):
+        ordinary = self.filtered(lambda line: not line.move_id.journal_id.ni_circuit_id)
+        return super(Line, ordinary)._validate_analytic_distribution()
 
     def _get_exchange_journal(self, company):
         circuit = check_same_circuit(self)
@@ -254,7 +266,7 @@ class Attachment(models.Model):
             if attachment.res_model in ('account.move', 'account.payment', 'account.journal', 'account.account') and attachment.res_id:
                 record = self.env[attachment.res_model].sudo().browse(attachment.res_id).exists()
                 if record.ni_circuit_id and (attachment.public or attachment.access_token):
-                    raise AccessError(_('Los adjuntos internos no pueden tener acceso público ni token.'))
+                    raise AccessError(_('Los adjuntos internos no pueden tener acceso p\u00fablico ni token.'))
 
     @api.model_create_multi
     def create(self, vals_list):

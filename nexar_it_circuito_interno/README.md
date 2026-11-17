@@ -1,12 +1,12 @@
 # Nexar Circuito Interno para Odoo 19
 
-Versión 19.0.1.0.1 · Nexar IT · LGPL-3
+Versión 19.0.1.0.3 · Nexar IT · LGPL-3
 
 ## Estado de entrega
 
 Paquete preparado para instalar y validar en staging. Se verificaron sintaxis Python, XML, archivos declarados y referencias XML externas existentes en la base del cliente. Se revisaron los métodos de cuentas, pagos y diferencias de cambio contra el código oficial de Odoo 19.
 
-Las pruebas de integración incluidas todavía deben ejecutarse en un servidor Odoo 19 Enterprise. Esta entrega no certifica su ejecución ni habilita por sí sola el circuito para el cliente. La versión 19.0.1.0.0 se instaló en staging. Su configuración falló y se revirtió. Esta revisión 19.0.1.0.1 corrige la validación de métodos de pago durante su desvinculación temporal por Odoo. La revisión debe desplegarse y probarse nuevamente.
+Las pruebas de integración incluidas todavía deben ejecutarse en un servidor Odoo 19 Enterprise. La versión 19.0.1.0.1 quedó instalada y configurada en el entorno de pruebas; la confirmación de una venta detectó un bloqueo del control analítico adicional. Esta versión 19.0.1.0.3 incluye la corrección de compatibilidad, la activación explícita del menú por usuario y la revisión de textos. Estas últimas correcciones requieren despliegue y actualización antes de verificarlas en Odoo. Esta entrega no certifica que el circuito esté listo para uso del cliente.
 
 ## Alcance
 
@@ -45,7 +45,7 @@ Si public_custom_odoo sigue siendo el repositorio custom de parlan3, colocar all
 3. Hacer commit y push a la rama de staging. Esperar que el build termine correctamente.
 4. Abrir staging con un administrador. Actualizar la lista de aplicaciones en modo desarrollador.
 5. Buscar Nexar Circuito Interno e instalar. La instalación agrega modelos, reglas y asistente. La clasificación de los diarios se realiza en el paso siguiente.
-6. Abrir Circuito interno > Configurar circuito.
+6. En Ajustes > Usuarios y compañías > Usuarios, abrir el administrador que realizará la configuración. En Derechos de acceso, marcar Mostrar Circuito interno y guardar. Habilitar también la casilla para el titular que operará el circuito. Luego abrir Circuito interno > Configurar circuito.
 7. Seleccionar las cuatro compañías U J S.A., Universo Producciones S.A., Entre Actos Gourmet S.A. y Elysium Arena S.A.
 8. Seleccionar el usuario ya creado usuario-contabilidad-prueba. El paquete no incluye contraseñas ni modifica la contraseña existente.
 9. Marcar la confirmación de asignación exclusiva y dejar activado Reemplazar las reglas manuales de esta implementación.
@@ -131,3 +131,29 @@ Fecha de preparación 17 de noviembre de 2026.
 Reemplazar la carpeta del addon por esta revisión, publicar el cambio en la rama 19.0 del repositorio custom y actualizar su referencia en stage-1. Confirmar el build. En Aplicaciones, actualizar Nexar Circuito Interno si Odoo.sh no ejecutó la actualización automática. Verificar la versión 19.0.1.0.1 y repetir Configurar circuito con las cuatro empresas y el titular.
 
 El fallo detectado en staging ocurrió antes de confirmar la transacción de configuración. Las reglas manuales y el permiso de consulta del titular deben seguir vigentes hasta que el asistente finalice.
+
+
+## Revisión 19.0.1.0.2
+
+La revisión 19.0.1.0.1 se instaló y actualizó correctamente. El asistente configuró las cuatro compañías, 24 diarios y 44 cuentas, y retiró las once reglas manuales. La creación de una venta utilizó correctamente las cuentas internas. Su confirmación detectó un conflicto con vippinn_ea_analytic_control, ya instalado en esta base.
+
+Esta revisión declara ese módulo como dependencia para garantizar el orden de carga y aplica su control analítico exclusivamente a los movimientos habituales. Los movimientos internos mantienen su restricción de analítica vacía. El control estándar de planes analíticos recibe la misma delimitación por circuito.
+
+Reemplazar la carpeta completa, desplegar en stage-1 y actualizar Nexar Circuito Interno. No hace falta reinstalar ni recrear los circuitos. Después de actualizar se debe restituir el permiso operativo desde el asistente para el mismo titular y compañías, y repetir las pruebas.
+
+Dependencia específica de este proyecto: vippinn_ea_analytic_control. En otras instalaciones este paquete requiere también ese addon custom. La compatibilidad y las pruebas de la revisión 19.0.1.0.2 están pendientes de ejecutarse en staging.
+
+
+## Revisión 19.0.1.0.3
+
+El menú Circuito interno queda oculto por defecto para todos los usuarios, incluidos los administradores habituales. El módulo agrega la casilla Mostrar Circuito interno en Ajustes > Usuarios y compañías > Usuarios > Derechos de acceso. Solo un administrador de Ajustes puede activarla.
+
+La casilla habilita la visibilidad del menú. Los permisos contables existentes y las reglas del titular siguen determinando el acceso a los datos. Desmarcar la casilla oculta el menú, pero no revoca por sí solo accesos que el usuario ya tenga desde Contabilidad o la API.
+
+El titular habilitado dispone de accesos a Ventas internas, Compras internas, Cobros y pagos internos y Asientos internos. El administrador habilitado puede abrir Configurar circuito. El asistente conserva la elección de visibilidad al reasignar los grupos operativos del titular.
+
+La ficha técnica del addon sigue administrándose desde Aplicaciones por los administradores autorizados. El superusuario real de Odoo puede omitir controles de acceso. La visibilidad por menú no constituye una barrera frente a la administración técnica de la base.
+
+Se normalizó la codificación de los textos propios del módulo y se revisaron etiquetas, mensajes de validación, avisos, títulos, botones y documentación. Los literales Python usan escapes Unicode para preservar los acentos incluso si una herramienta vuelve a guardar el archivo con otra codificación. XML y documentación se guardan en UTF-8. Los textos heredados de Odoo y otros módulos dependen de sus traducciones instaladas.
+
+Actualizar a esta revisión y habilitar expresamente el menú en los usuarios necesarios. La revisión incluye también la compatibilidad analítica de 19.0.1.0.2. Las pruebas operativas continúan pendientes del despliegue.

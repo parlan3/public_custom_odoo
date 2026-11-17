@@ -200,6 +200,9 @@ class TestInternalCircuit(TransactionCase):
             'company_id': company.id, 'default_account_id': income.id,
             'l10n_latam_use_documents': False})
         self.partner.with_company(company).property_account_receivable_id = receivable
+        plan = self.env['account.analytic.plan'].create({'name': 'NI QA plan habitual'})
+        analytic = self.env['account.analytic.account'].create({
+            'name': 'NI QA centro habitual', 'plan_id': plan.id, 'company_id': company.id})
         invoice = self.env['account.move'].with_user(self.other).with_context(
             allowed_company_ids=company.ids).create({
                 'move_type': 'out_invoice', 'journal_id': journal.id, 'partner_id': self.partner.id,
@@ -207,6 +210,7 @@ class TestInternalCircuit(TransactionCase):
                 'invoice_line_ids': [Command.create({
                     'name': 'QA habitual', 'account_id': income.id, 'price_unit': 100,
                     'quantity': 1, 'tax_ids': [Command.clear()],
+                    'analytic_distribution': {str(analytic.id): 100},
                 })],
             })
         invoice.action_post()
@@ -235,3 +239,33 @@ class TestInternalCircuit(TransactionCase):
         method = circuit._journal('INARS').inbound_payment_method_line_ids[:1].with_user(self.owner)
         with self.assertRaises((AccessError, ValidationError)), self.cr.savepoint():
             method.write({'payment_account_id': other._account('cash_ars').id})
+
+
+    def test_internal_analytic_control_compatibility(self):
+        invoice = self.invoice(self.circuits[0])
+        self.assertFalse(invoice.invoice_line_ids.analytic_distribution)
+        self.assertTrue(invoice._ea_check_analytic_distribution())
+        invoice.line_ids._validate_analytic_distribution()
+        invoice.action_post()
+        self.assertEqual(invoice.state, 'posted')
+
+
+    def test_menu_requires_explicit_activation_even_for_administrator(self):
+        manager = self.env['res.users'].with_context(no_reset_password=True).create({
+            'name': 'NI QA administrador', 'login': 'ni_qa_manager',
+            'company_id': self.companies[0].id,
+            'company_ids': [Command.set(self.companies.ids)],
+            'group_ids': [Command.set([self.env.ref('base.group_user').id,
+                                      self.env.ref('base.group_system').id])],
+        })
+        root = self.env.ref('nexar_it_circuito_interno.menu_setup_root')
+        menus = self.env['ir.ui.menu'].with_user(manager)
+        self.assertNotIn(root.id, menus._visible_menu_ids())
+        manager.ni_menu_enabled = True
+        self.assertIn(root.id, menus._visible_menu_ids())
+        manager.ni_menu_enabled = False
+        self.assertNotIn(root.id, menus._visible_menu_ids())
+
+    def test_operator_cannot_enable_own_menu(self):
+        with self.assertRaises(AccessError), self.cr.savepoint():
+            self.owner.with_user(self.owner).write({'ni_menu_enabled': True})
