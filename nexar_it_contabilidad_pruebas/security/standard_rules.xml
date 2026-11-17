@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="visibility_account_move" model="ir.rule">
+        <field name="name">CDP - visibility_account_move</field>
+        <field name="model_id" ref="account.model_account_move" />
+        <field name="domain_force">['|', ('cdp_user_id', '=', False), ('cdp_user_id', '=', user.id)]</field>
+    </record>
+    <record id="visibility_account_move_line" model="ir.rule">
+        <field name="name">CDP - visibility_account_move_line</field>
+        <field name="model_id" ref="account.model_account_move_line" />
+        <field name="domain_force">['|', ('cdp_user_id', '=', False), ('cdp_user_id', '=', user.id)]</field>
+    </record>
+    <record id="visibility_account_payment" model="ir.rule">
+        <field name="name">CDP - visibility_account_payment</field>
+        <field name="model_id" ref="account.model_account_payment" />
+        <field name="domain_force">['|', ('cdp_user_id', '=', False), ('cdp_user_id', '=', user.id)]</field>
+    </record>
+    <record id="visibility_account_account" model="ir.rule">
+        <field name="name">CDP - visibility_account_account</field>
+        <field name="model_id" ref="account.model_account_account" />
+        <field name="domain_force">['|', ('cdp_user_id', '=', False), ('cdp_user_id', '=', user.id)]</field>
+    </record>
+    <record id="visibility_account_journal" model="ir.rule">
+        <field name="name">CDP - visibility_account_journal</field>
+        <field name="model_id" ref="account.model_account_journal" />
+        <field name="domain_force">['|', ('cdp_user_id', '=', False), ('cdp_user_id', '=', user.id)]</field>
+    </record>
+    <record id="visibility_account_bank_statement" model="ir.rule">
+        <field name="name">CDP - visibility_account_bank_statement</field>
+        <field name="model_id" ref="account.model_account_bank_statement" />
+        <field name="domain_force">['|', ('journal_id.cdp_user_id', '=', False), ('journal_id.cdp_user_id', '=', user.id)]</field>
+    </record>
+    <record id="visibility_account_bank_statement_line" model="ir.rule">
+        <field name="name">CDP - visibility_account_bank_statement_line</field>
+        <field name="model_id" ref="account.model_account_bank_statement_line" />
+        <field name="domain_force">['|', ('journal_id.cdp_user_id', '=', False), ('journal_id.cdp_user_id', '=', user.id)]</field>
+    </record>
+    <record id="visibility_account_payment_method_line" model="ir.rule">
+        <field name="name">CDP - visibility_account_payment_method_line</field>
+        <field name="model_id" ref="account.model_account_payment_method_line" />
+        <field name="domain_force">['|', ('journal_id.cdp_user_id', '=', False), ('journal_id.cdp_user_id', '=', user.id)]</field>
+    </record>
+    <record id="visibility_partial" model="ir.rule">
+        <field name="name">CDP - visibility_partial</field>
+        <field name="model_id" ref="account.model_account_partial_reconcile" />
+        <field name="domain_force">['|', '&amp;', ('debit_move_id.cdp_user_id', '=', False), ('credit_move_id.cdp_user_id', '=', False), '&amp;', ('debit_move_id.cdp_user_id', '=', user.id), ('credit_move_id.cdp_user_id', '=', user.id)]</field>
+    </record>
+    <record id="visibility_full" model="ir.rule">
+        <field name="name">CDP - visibility_full</field>
+        <field name="model_id" ref="account.model_account_full_reconcile" />
+        <field name="domain_force">['|', ('cdp_circuit_id', '=', False), ('cdp_user_id', '=', user.id)]</field>
+    </record>
+    <record id="visibility_invoice_analysis" model="ir.rule">
+        <field name="name">CDP - visibility_invoice_analysis</field>
+        <field name="model_id" ref="account.model_account_invoice_report" />
+        <field name="domain_force">['|', ('move_id.journal_id.cdp_circuit_id', '=', False), ('move_id.journal_id.cdp_user_id', '=', user.id)]</field>
+    </record>
+</odoo>

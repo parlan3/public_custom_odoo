@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <record id="rule_circuit" model="ir.rule">
+    <field name="name">Circuito interno / model_nexar_internal_circuit</field>
+    <field name="model_id" ref="model_nexar_internal_circuit" />
+    <field name="domain_force">[('user_id', '=', user.id)] if not user.has_group('base.group_system') else [(1, '=', 1)]</field>
+  </record>
+  <record id="rule_visibility_0" model="ir.rule">
+    <field name="name">Circuito interno / account.model_account_account</field>
+    <field name="model_id" ref="account.model_account_account" />
+    <field name="domain_force">[('ni_circuit_id.user_id', '=', user.id)] if user.has_group('nexar_it_circuito_interno.group_operator') else [('ni_circuit_id', '=', False)]</field>
+  </record>
+  <record id="rule_visibility_1" model="ir.rule">
+    <field name="name">Circuito interno / account.model_account_journal</field>
+    <field name="model_id" ref="account.model_account_journal" />
+    <field name="domain_force">[('ni_circuit_id.user_id', '=', user.id)] if user.has_group('nexar_it_circuito_interno.group_operator') else [('ni_circuit_id', '=', False)]</field>
+  </record>
+  <record id="rule_visibility_2" model="ir.rule">
+    <field name="name">Circuito interno / account.model_account_move</field>
+    <field name="model_id" ref="account.model_account_move" />
+    <field name="domain_force">[('journal_id.ni_circuit_id.user_id', '=', user.id)] if user.has_group('nexar_it_circuito_interno.group_operator') else [('journal_id.ni_circuit_id', '=', False)]</field>
+  </record>
+  <record id="rule_visibility_3" model="ir.rule">
+    <field name="name">Circuito interno / account.model_account_move_line</field>
+    <field name="model_id" ref="account.model_account_move_line" />
+    <field name="domain_force">[('move_id.journal_id.ni_circuit_id.user_id', '=', user.id)] if user.has_group('nexar_it_circuito_interno.group_operator') else [('move_id.journal_id.ni_circuit_id', '=', False)]</field>
+  </record>
+  <record id="rule_visibility_4" model="ir.rule">
+    <field name="name">Circuito interno / account.model_account_payment</field>
+    <field name="model_id" ref="account.model_account_payment" />
+    <field name="domain_force">[('journal_id.ni_circuit_id.user_id', '=', user.id)] if user.has_group('nexar_it_circuito_interno.group_operator') else [('journal_id.ni_circuit_id', '=', False)]</field>
+  </record>
+  <record id="rule_visibility_5" model="ir.rule">
+    <field name="name">Circuito interno / account.model_account_bank_statement</field>
+    <field name="model_id" ref="account.model_account_bank_statement" />
+    <field name="domain_force">[('journal_id.ni_circuit_id.user_id', '=', user.id)] if user.has_group('nexar_it_circuito_interno.group_operator') else [('journal_id.ni_circuit_id', '=', False)]</field>
+  </record>
+  <record id="rule_visibility_6" model="ir.rule">
+    <field name="name">Circuito interno / account.model_account_bank_statement_line</field>
+    <field name="model_id" ref="account.model_account_bank_statement_line" />
+    <field name="domain_force">[('journal_id.ni_circuit_id.user_id', '=', user.id)] if user.has_group('nexar_it_circuito_interno.group_operator') else [('journal_id.ni_circuit_id', '=', False)]</field>
+  </record>
+  <record id="rule_visibility_7" model="ir.rule">
+    <field name="name">Circuito interno / account.model_account_payment_method_line</field>
+    <field name="model_id" ref="account.model_account_payment_method_line" />
+    <field name="domain_force">[('journal_id.ni_circuit_id.user_id', '=', user.id)] if user.has_group('nexar_it_circuito_interno.group_operator') else [('journal_id.ni_circuit_id', '=', False)]</field>
+  </record>
+  <record id="rule_visibility_8" model="ir.rule">
+    <field name="name">Circuito interno / account.model_account_invoice_report</field>
+    <field name="model_id" ref="account.model_account_invoice_report" />
+    <field name="domain_force">[('move_id.journal_id.ni_circuit_id.user_id', '=', user.id)] if user.has_group('nexar_it_circuito_interno.group_operator') else [('move_id.journal_id.ni_circuit_id', '=', False)]</field>
+  </record>
+  <record id="rule_visibility_9" model="ir.rule">
+    <field name="name">Circuito interno / account.model_account_partial_reconcile</field>
+    <field name="model_id" ref="account.model_account_partial_reconcile" />
+    <field name="domain_force">[('debit_move_id.move_id.journal_id.ni_circuit_id.user_id', '=', user.id), ('credit_move_id.move_id.journal_id.ni_circuit_id.user_id', '=', user.id)] if user.has_group('nexar_it_circuito_interno.group_operator') else [('debit_move_id.move_id.journal_id.ni_circuit_id', '=', False), ('credit_move_id.move_id.journal_id.ni_circuit_id', '=', False)]</field>
+  </record>
+  <record id="rule_visibility_10" model="ir.rule">
+    <field name="name">Circuito interno / account.model_account_full_reconcile</field>
+    <field name="model_id" ref="account.model_account_full_reconcile" />
+    <field name="domain_force">[('ni_circuit_id.user_id', '=', user.id)] if user.has_group('nexar_it_circuito_interno.group_operator') else [('ni_circuit_id', '=', False)]</field>
+  </record>
+  <record id="rule_private_attachment" model="ir.rule">
+    <field name="name">Circuito interno / attachment</field>
+    <field name="model_id" ref="base.model_ir_attachment" />
+    <field name="domain_force">['|', ('ni_user_id', '=', False), ('ni_user_id', '=', user.id)]</field>
+  </record>
+  <record id="rule_private_message" model="ir.rule">
+    <field name="name">Circuito interno / message</field>
+    <field name="model_id" ref="mail.model_mail_message" />
+    <field name="domain_force">['|', ('ni_user_id', '=', False), ('ni_user_id', '=', user.id)]</field>
+  </record>
+  <record id="rule_private_activity" model="ir.rule">
+    <field name="name">Circuito interno / activity</field>
+    <field name="model_id" ref="mail.model_mail_activity" />
+    <field name="domain_force">['|', ('ni_user_id', '=', False), ('ni_user_id', '=', user.id)]</field>
+  </record>
+  <record id="rule_private_follower" model="ir.rule">
+    <field name="name">Circuito interno / follower</field>
+    <field name="model_id" ref="mail.model_mail_followers" />
+    <field name="domain_force">['|', ('ni_user_id', '=', False), ('ni_user_id', '=', user.id)]</field>
+  </record>
+</odoo>

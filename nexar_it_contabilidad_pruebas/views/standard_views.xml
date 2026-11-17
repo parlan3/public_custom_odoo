@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="cdp_out_invoice" model="ir.actions.act_window">
+        <field name="name">Facturas de clientes</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('cdp_circuit_id', '!=', False), ('move_type', '=', 'out_invoice')]</field>
+        <field name="context">{'default_move_type': 'out_invoice', 'search_default_cdp': 1, 'cdp_entry': True}</field>
+    </record>
+    <menuitem id="menu_cdp_out_invoice" name="Facturas de clientes" parent="menu_root" action="cdp_out_invoice" sequence="10" />
+    <record id="cdp_out_refund" model="ir.actions.act_window">
+        <field name="name">Notas de crédito de clientes</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('cdp_circuit_id', '!=', False), ('move_type', '=', 'out_refund')]</field>
+        <field name="context">{'default_move_type': 'out_refund', 'search_default_cdp': 1, 'cdp_entry': True}</field>
+    </record>
+    <menuitem id="menu_cdp_out_refund" name="Notas de crédito de clientes" parent="menu_root" action="cdp_out_refund" sequence="10" />
+    <record id="cdp_in_invoice" model="ir.actions.act_window">
+        <field name="name">Facturas de proveedores</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('cdp_circuit_id', '!=', False), ('move_type', '=', 'in_invoice')]</field>
+        <field name="context">{'default_move_type': 'in_invoice', 'search_default_cdp': 1, 'cdp_entry': True}</field>
+    </record>
+    <menuitem id="menu_cdp_in_invoice" name="Facturas de proveedores" parent="menu_root" action="cdp_in_invoice" sequence="10" />
+    <record id="cdp_in_refund" model="ir.actions.act_window">
+        <field name="name">Notas de crédito de proveedores</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('cdp_circuit_id', '!=', False), ('move_type', '=', 'in_refund')]</field>
+        <field name="context">{'default_move_type': 'in_refund', 'search_default_cdp': 1, 'cdp_entry': True}</field>
+    </record>
+    <menuitem id="menu_cdp_in_refund" name="Notas de crédito de proveedores" parent="menu_root" action="cdp_in_refund" sequence="10" />
+    <record id="cdp_inbound" model="ir.actions.act_window">
+        <field name="name">Cobros</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('cdp_circuit_id', '!=', False), ('payment_type', '=', 'inbound')]</field>
+        <field name="context">{'default_payment_type': 'inbound', 'default_partner_type': 'customer', 'cdp_entry': True}</field>
+    </record>
+    <menuitem id="menu_cdp_inbound" name="Cobros" parent="menu_root" action="cdp_inbound" sequence="20" />
+    <record id="cdp_outbound" model="ir.actions.act_window">
+        <field name="name">Pagos</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('cdp_circuit_id', '!=', False), ('payment_type', '=', 'outbound')]</field>
+        <field name="context">{'default_payment_type': 'outbound', 'default_partner_type': 'supplier', 'cdp_entry': True}</field>
+    </record>
+    <menuitem id="menu_cdp_outbound" name="Pagos" parent="menu_root" action="cdp_outbound" sequence="20" />
+    <record id="cdp_accounts" model="ir.actions.act_window">
+        <field name="name">Cuentas CDP</field>
+        <field name="res_model">account.account</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('cdp_circuit_id', '!=', False)]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_cdp_accounts" name="Cuentas" parent="menu_root" action="cdp_accounts" sequence="30" />
+    <record id="report_cdp" model="ir.actions.client">
+        <field name="name">Mayor CDP</field>
+        <field name="tag">account_report</field>
+        <field name="context">{'cdp_report_scope': 'cdp'}</field>
+        <field name="params" eval="{'report_id': ref('account_reports.general_ledger_report')}" />
+    </record>
+    <menuitem id="menu_report_cdp" name="Mayor CDP" parent="menu_root" action="report_cdp" sequence="40" />
+    <record id="report_fiscal" model="ir.actions.client">
+        <field name="name">Mayor fiscal</field>
+        <field name="tag">account_report</field>
+        <field name="context">{'cdp_report_scope': 'fiscal'}</field>
+        <field name="params" eval="{'report_id': ref('account_reports.general_ledger_report')}" />
+    </record>
+    <menuitem id="menu_report_fiscal" name="Mayor fiscal" parent="menu_root" action="report_fiscal" sequence="40" />
+    <record id="report_both" model="ir.actions.client">
+        <field name="name">Mayor combinado</field>
+        <field name="tag">account_report</field>
+        <field name="context">{'cdp_report_scope': 'both'}</field>
+        <field name="params" eval="{'report_id': ref('account_reports.general_ledger_report')}" />
+    </record>
+    <menuitem id="menu_report_both" name="Mayor combinado" parent="menu_root" action="report_both" sequence="40" />
+    <record id="balance_sheet_cdp" model="ir.actions.client">
+        <field name="name">Balance CDP</field>
+        <field name="tag">account_report</field>
+        <field name="context">{'cdp_report_scope': 'cdp'}</field>
+        <field name="params" eval="{'report_id': ref('account_reports.balance_sheet')}" />
+    </record>
+    <menuitem id="menu_balance_sheet_cdp" name="Balance CDP" parent="menu_root" action="balance_sheet_cdp" sequence="50" />
+    <record id="balance_sheet_fiscal" model="ir.actions.client">
+        <field name="name">Balance fiscal</field>
+        <field name="tag">account_report</field>
+        <field name="context">{'cdp_report_scope': 'fiscal'}</field>
+        <field name="params" eval="{'report_id': ref('account_reports.balance_sheet')}" />
+    </record>
+    <menuitem id="menu_balance_sheet_fiscal" name="Balance fiscal" parent="menu_root" action="balance_sheet_fiscal" sequence="50" />
+    <record id="balance_sheet_both" model="ir.actions.client">
+        <field name="name">Balance combinado</field>
+        <field name="tag">account_report</field>
+        <field name="context">{'cdp_report_scope': 'both'}</field>
+        <field name="params" eval="{'report_id': ref('account_reports.balance_sheet')}" />
+    </record>
+    <menuitem id="menu_balance_sheet_both" name="Balance combinado" parent="menu_root" action="balance_sheet_both" sequence="50" />
+    <record id="profit_and_loss_cdp" model="ir.actions.client">
+        <field name="name">Resultados CDP</field>
+        <field name="tag">account_report</field>
+        <field name="context">{'cdp_report_scope': 'cdp'}</field>
+        <field name="params" eval="{'report_id': ref('account_reports.profit_and_loss')}" />
+    </record>
+    <menuitem id="menu_profit_and_loss_cdp" name="Resultados CDP" parent="menu_root" action="profit_and_loss_cdp" sequence="50" />
+    <record id="profit_and_loss_fiscal" model="ir.actions.client">
+        <field name="name">Resultados fiscal</field>
+        <field name="tag">account_report</field>
+        <field name="context">{'cdp_report_scope': 'fiscal'}</field>
+        <field name="params" eval="{'report_id': ref('account_reports.profit_and_loss')}" />
+    </record>
+    <menuitem id="menu_profit_and_loss_fiscal" name="Resultados fiscal" parent="menu_root" action="profit_and_loss_fiscal" sequence="50" />
+    <record id="profit_and_loss_both" model="ir.actions.client">
+        <field name="name">Resultados combinado</field>
+        <field name="tag">account_report</field>
+        <field name="context">{'cdp_report_scope': 'both'}</field>
+        <field name="params" eval="{'report_id': ref('account_reports.profit_and_loss')}" />
+    </record>
+    <menuitem id="menu_profit_and_loss_both" name="Resultados combinado" parent="menu_root" action="profit_and_loss_both" sequence="50" />
+    <record id="cdp_items" model="ir.actions.act_window">
+        <field name="name">Apuntes CDP</field>
+        <field name="res_model">account.move.line</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="domain">[('cdp_circuit_id', '!=', False)]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_cdp_items" name="Apuntes" parent="menu_root" action="cdp_items" sequence="35" />
+    <template id="invoice_cdp_notice" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <div t-if="o.journal_id.cdp_circuit_id" class="mt-4 fw-bold">CDP — SIMULACIÓN SIN VALIDEZ FISCAL</div>
+        </xpath>
+    </template>
+</odoo>
