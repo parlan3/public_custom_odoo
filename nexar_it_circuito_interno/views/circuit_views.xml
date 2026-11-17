@@ -1,0 +1,38 @@
+<odoo>
+    <record id="setup_view" model="ir.ui.view">
+        <field name="name">nexar.internal.setup.form</field>
+        <field name="model">nexar.internal.setup</field>
+        <field name="arch" type="xml">
+            <form string="Configurar circuito interno">
+                <div class="alert alert-warning" role="alert">El titular tendrá acceso contable exclusivamente a este circuito. Se reemplazarán sus grupos y compañías. Ejecutar primero en staging con respaldo.</div>
+                <group>
+                    <field name="company_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    <field name="user_id" options="{'no_create': True}"/>
+                    <field name="acknowledge"/>
+                    <field name="migrate_legacy"/>
+                </group>
+                <footer>
+                    <button name="action_configure" type="object" string="Configurar circuito" class="btn-primary"/>
+                    <button string="Cancelar" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_setup" model="ir.actions.act_window">
+        <field name="name">Configurar circuito interno</field>
+        <field name="res_model">nexar.internal.setup</field>
+        <field name="view_mode">form</field><field name="target">new</field>
+    </record>
+    <menuitem id="menu_setup_root" name="Circuito interno" groups="base.group_system" sequence="95"/>
+    <menuitem id="menu_setup" name="Configurar circuito" parent="menu_setup_root" action="action_setup" groups="base.group_system"/>
+    <record id="move_form_internal" model="ir.ui.view">
+        <field name="name">account.move.form.internal</field><field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <field name="ni_circuit_id" invisible="True"/>
+                <div class="alert alert-warning" role="alert" invisible="not ni_circuit_id">CIRCUITO INTERNO — SIN EMISIÓN ARCA</div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

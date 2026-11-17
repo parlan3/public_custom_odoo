@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_circuit_admin,Circuito administrador,model_nexar_internal_circuit,base.group_system,1,0,0,0
+access_circuit_operator,Circuito titular,model_nexar_internal_circuit,group_operator,1,0,0,0
+access_setup,Configuracion,model_nexar_internal_setup,base.group_system,1,1,1,1
