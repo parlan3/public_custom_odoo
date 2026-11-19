@@ -1,16 +1,23 @@
 # Nexar Visibilidad Contable — Odoo 19
 
-Versión 19.0.1.0.1. Complemento de seguridad sobre Contabilidad nativa.
+Versión 19.0.1.0.2. Complemento de seguridad sobre Contabilidad nativa.
 Depende de `account` y `account_reports` (Enterprise). No depende de CDP ni de
 `nexar_it_circuito_interno`. No crea diarios, cuentas, asientos ni informes.
 
 ## Estado de entrega
 
-Código preparado y revisado estáticamente; referencias de modelos y vistas
-contrastadas con el entorno de pruebas. **Pendiente instalar y ejecutar las
-pruebas de permisos en Odoo 19. No habilitar en producción todavía.**
-Las pruebas nativas de facturación y pagos realizadas antes de instalar este
-complemento no certifican los permisos del complemento.
+La versión 19.0.1.0.1 está instalada en test desde el 19/11/2026. Se verificaron
+lecturas directas y exportación de registros bloqueadas para el administrador
+sin acceso; consulta sin escritura para Gerencia; 16 operaciones ARS/USD;
+Balance, Resultados y Libro mayor; y equivalencia entre ambos circuitos y
+la suma de sus reportes separados en las cuatro empresas.
+
+Esta versión 19.0.1.0.2 corrige únicamente la representación del perfil Solo
+consulta en el selector del usuario: Odoo 19 distingue grupos directos e
+implícitos. Su despliegue y verificación en test están pendientes. La seguridad
+efectiva de Gerencia en 1.0.1 fue comprobada; se explicitó su grupo de consulta
+para mostrar correctamente el selector en esa versión. No es aprobación para
+producción ni certificación de integraciones o informes externos.
 
 ## Configuración
 

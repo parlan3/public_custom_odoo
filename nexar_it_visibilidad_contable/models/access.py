@@ -37,9 +37,10 @@ class Users(models.Model):
     def _compute_restricted_accounting_access(self):
         operator = self.env.ref(OPERATOR)
         access = self.env.ref(ACCESS)
+        reader = self.env.ref(READER)
         for user in self:
             user.restricted_accounting_access = ('operate' if operator in user.group_ids
-                                                  else 'read' if access in user.group_ids else 'none')
+                                                  else 'read' if reader in user.group_ids or access in user.group_ids else 'none')
 
     def _inverse_restricted_accounting_access(self):
         if not self.env.user.has_group('base.group_system'):

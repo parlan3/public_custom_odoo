@@ -129,6 +129,8 @@ class TestCircuitSecurity(AccountTestInvoicingCommon):
 
     def test_user_selection_grants_and_revokes(self):
         self.outsider.restricted_accounting_access = 'read'
+        self.outsider.invalidate_recordset(['restricted_accounting_access'])
+        self.assertEqual(self.outsider.restricted_accounting_access, 'read')
         self.assertTrue(self.private_move.with_user(self.outsider).read(['name']))
         self.outsider.restricted_accounting_access = 'operate'
         self.private_move.with_user(self.outsider).write({'ref': 'Temporal'})
