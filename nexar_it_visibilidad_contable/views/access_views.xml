@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_users_restricted_accounting" model="ir.ui.view">
+    <field name="name">res.users.circuito.restringido</field>
+    <field name="model">res.users</field>
+    <field name="inherit_id" ref="base.view_users_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//page[@name='access_rights']" position="inside">
+        <group string="Circuito contable restringido" groups="base.group_system">
+          <field name="restricted_accounting_access"/>
+          <div class="text-muted" colspan="2">Sin acceso por defecto. La consulta permite incluir ambos circuitos en los informes nativos; la operación permite modificar el circuito según los permisos contables y empresas del usuario.</div>
+        </group>
+      </xpath>
+    </field>
+  </record>
+  <record id="view_journal_restricted_accounting" model="ir.ui.view">
+    <field name="name">account.journal.circuito.restringido</field>
+    <field name="model">account.journal</field>
+    <field name="inherit_id" ref="account.view_account_journal_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//sheet" position="inside">
+        <group string="Acceso al circuito" groups="base.group_system">
+          <field name="restricted_accounting"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+  <record id="view_account_restricted_accounting" model="ir.ui.view">
+    <field name="name">account.account.circuito.restringido</field>
+    <field name="model">account.account</field>
+    <field name="inherit_id" ref="account.view_account_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//sheet" position="inside">
+        <group string="Acceso al circuito" groups="base.group_system">
+          <field name="restricted_accounting"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+</odoo>

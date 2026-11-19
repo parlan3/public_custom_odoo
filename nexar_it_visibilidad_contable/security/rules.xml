@@ -1,0 +1,273 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <record id="rule_account_account_read" model="ir.rule">
+    <field name="name">Circuito restringido / account.account / read</field>
+    <field name="model_id" ref="account.model_account_account" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_account_account_change" model="ir.rule">
+    <field name="name">Circuito restringido / account.account / change</field>
+    <field name="model_id" ref="account.model_account_account" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_account_journal_read" model="ir.rule">
+    <field name="name">Circuito restringido / account.journal / read</field>
+    <field name="model_id" ref="account.model_account_journal" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_account_journal_change" model="ir.rule">
+    <field name="name">Circuito restringido / account.journal / change</field>
+    <field name="model_id" ref="account.model_account_journal" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_account_move_read" model="ir.rule">
+    <field name="name">Circuito restringido / account.move / read</field>
+    <field name="model_id" ref="account.model_account_move" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_account_move_change" model="ir.rule">
+    <field name="name">Circuito restringido / account.move / change</field>
+    <field name="model_id" ref="account.model_account_move" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_account_move_line_read" model="ir.rule">
+    <field name="name">Circuito restringido / account.move.line / read</field>
+    <field name="model_id" ref="account.model_account_move_line" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_account_move_line_change" model="ir.rule">
+    <field name="name">Circuito restringido / account.move.line / change</field>
+    <field name="model_id" ref="account.model_account_move_line" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_account_payment_read" model="ir.rule">
+    <field name="name">Circuito restringido / account.payment / read</field>
+    <field name="model_id" ref="account.model_account_payment" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_account_payment_change" model="ir.rule">
+    <field name="name">Circuito restringido / account.payment / change</field>
+    <field name="model_id" ref="account.model_account_payment" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_account_bank_statement_read" model="ir.rule">
+    <field name="name">Circuito restringido / account.bank.statement / read</field>
+    <field name="model_id" ref="account.model_account_bank_statement" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_account_bank_statement_change" model="ir.rule">
+    <field name="name">Circuito restringido / account.bank.statement / change</field>
+    <field name="model_id" ref="account.model_account_bank_statement" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_account_bank_statement_line_read" model="ir.rule">
+    <field name="name">Circuito restringido / account.bank.statement.line / read</field>
+    <field name="model_id" ref="account.model_account_bank_statement_line" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_account_bank_statement_line_change" model="ir.rule">
+    <field name="name">Circuito restringido / account.bank.statement.line / change</field>
+    <field name="model_id" ref="account.model_account_bank_statement_line" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_account_payment_method_line_read" model="ir.rule">
+    <field name="name">Circuito restringido / account.payment.method.line / read</field>
+    <field name="model_id" ref="account.model_account_payment_method_line" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_account_payment_method_line_change" model="ir.rule">
+    <field name="name">Circuito restringido / account.payment.method.line / change</field>
+    <field name="model_id" ref="account.model_account_payment_method_line" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_account_partial_reconcile_read" model="ir.rule">
+    <field name="name">Circuito restringido / account.partial.reconcile / read</field>
+    <field name="model_id" ref="account.model_account_partial_reconcile" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_account_partial_reconcile_change" model="ir.rule">
+    <field name="name">Circuito restringido / account.partial.reconcile / change</field>
+    <field name="model_id" ref="account.model_account_partial_reconcile" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_account_full_reconcile_read" model="ir.rule">
+    <field name="name">Circuito restringido / account.full.reconcile / read</field>
+    <field name="model_id" ref="account.model_account_full_reconcile" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_account_full_reconcile_change" model="ir.rule">
+    <field name="name">Circuito restringido / account.full.reconcile / change</field>
+    <field name="model_id" ref="account.model_account_full_reconcile" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_account_analytic_line_read" model="ir.rule">
+    <field name="name">Circuito restringido / account.analytic.line / read</field>
+    <field name="model_id" ref="analytic.model_account_analytic_line" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_account_analytic_line_change" model="ir.rule">
+    <field name="name">Circuito restringido / account.analytic.line / change</field>
+    <field name="model_id" ref="analytic.model_account_analytic_line" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_mail_message_read" model="ir.rule">
+    <field name="name">Circuito restringido / mail.message / read</field>
+    <field name="model_id" ref="mail.model_mail_message" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_mail_message_change" model="ir.rule">
+    <field name="name">Circuito restringido / mail.message / change</field>
+    <field name="model_id" ref="mail.model_mail_message" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_mail_activity_read" model="ir.rule">
+    <field name="name">Circuito restringido / mail.activity / read</field>
+    <field name="model_id" ref="mail.model_mail_activity" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_mail_activity_change" model="ir.rule">
+    <field name="name">Circuito restringido / mail.activity / change</field>
+    <field name="model_id" ref="mail.model_mail_activity" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_mail_followers_read" model="ir.rule">
+    <field name="name">Circuito restringido / mail.followers / read</field>
+    <field name="model_id" ref="mail.model_mail_followers" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_mail_followers_change" model="ir.rule">
+    <field name="name">Circuito restringido / mail.followers / change</field>
+    <field name="model_id" ref="mail.model_mail_followers" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+  <record id="rule_ir_attachment_read" model="ir.rule">
+    <field name="name">Circuito restringido / ir.attachment / read</field>
+    <field name="model_id" ref="base.model_ir_attachment" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_access') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="True" />
+    <field name="perm_write" eval="False" />
+    <field name="perm_create" eval="False" />
+    <field name="perm_unlink" eval="False" />
+  </record>
+  <record id="rule_ir_attachment_change" model="ir.rule">
+    <field name="name">Circuito restringido / ir.attachment / change</field>
+    <field name="model_id" ref="base.model_ir_attachment" />
+    <field name="domain_force">[(1, '=', 1)] if user.has_group('nexar_it_visibilidad_contable.group_operator') else [('restricted_accounting', '=', False)]</field>
+    <field name="perm_read" eval="False" />
+    <field name="perm_write" eval="True" />
+    <field name="perm_create" eval="True" />
+    <field name="perm_unlink" eval="True" />
+  </record>
+</odoo>
