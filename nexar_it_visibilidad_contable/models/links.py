@@ -36,7 +36,11 @@ class LinkRestriction(models.AbstractModel):
         if operator not in ('=', '!=', 'in', 'not in'):
             raise NotImplementedError('Operador de restricción no admitido')
         # Odoo may normalize boolean searches to in/not in.
-        values = value if isinstance(value, (list, tuple)) else [value]
+        # Odoo 19 normalizes membership values to OrderedSet, not necessarily
+        # list/tuple. Wrapping that container in a list reverses the test.
+        values = list(value) if operator in ('in', 'not in') else [value]
+        if not values:
+            return Domain.FALSE if operator == 'in' else Domain.TRUE
         want_true = True in values
         want_false = False in values
         if want_true and want_false:

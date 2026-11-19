@@ -98,6 +98,23 @@ class TestCircuitSecurity(AccountTestInvoicingCommon):
         with self.assertRaises(AccessError), self.cr.savepoint():
             self.private_move._portal_ensure_token()
 
+    def test_boolean_link_search_matches_computed_classification(self):
+        Attach = self.env['ir.attachment']
+        ordinary = Attach.create({'name': 'Público de prueba.txt', 'raw': b'ordinary',
+            'res_model': 'account.move', 'res_id': self.public_move.id})
+        private = Attach.create({'name': 'Restringido de prueba.txt', 'raw': b'private',
+            'res_model': 'account.move', 'res_id': self.private_move.id})
+        candidates = ordinary | private
+        for operator, value, expected in [
+            ('=', True, private), ('=', False, ordinary),
+            ('in', [True], private), ('not in', [True], ordinary),
+            ('in', [False], ordinary), ('not in', [False], private),
+            ('in', [], Attach.browse()), ('not in', [], candidates),
+            ('in', [True, False], candidates), ('not in', [True, False], Attach.browse()),
+        ]:
+            result = Attach.search([('id', 'in', candidates.ids), ('restricted_accounting', operator, value)])
+            self.assertEqual(set(result.ids), set(expected.ids))
+
     def test_reclassification_after_existing_attachment(self):
         attachment = self.env['ir.attachment'].create({'name': 'Anterior.txt', 'raw': b'x',
             'res_model': 'account.move', 'res_id': self.public_move.id})

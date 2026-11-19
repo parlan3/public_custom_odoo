@@ -1,6 +1,6 @@
 # Nexar Visibilidad Contable — Odoo 19
 
-Versión 19.0.1.0.0. Complemento de seguridad sobre Contabilidad nativa.
+Versión 19.0.1.0.1. Complemento de seguridad sobre Contabilidad nativa.
 Depende de `account` y `account_reports` (Enterprise). No depende de CDP ni de
 `nexar_it_circuito_interno`. No crea diarios, cuentas, asientos ni informes.
 
